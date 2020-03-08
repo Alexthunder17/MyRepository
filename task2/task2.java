@@ -1,101 +1,96 @@
 package task2;
 
 import java.io.*;
-import java.util.*;
 
 public class task2 {
     public static void main(String[] args) throws Exception {
-        double arr1[][] = readFile(args[0]);
-        double arr2[][] = readFile(args[1]);
-        arr1 = highRight(arr1);
-        attachment(arr1, arr2);
+        double[][] rectanglePoints = readFile(args[0]);
+        double[][] points = readFile(args[1]);
+        rectanglePoints = calculateTopRight(rectanglePoints);
+        calculateAttachment(rectanglePoints, points);
     }
 
     static double[][] readFile(String filename) throws Exception {
         BufferedReader in = new BufferedReader(new FileReader(filename));
-        String data = "";
+        String data;
         int counter = 0;
-        double input1[][] = new double[100][2];
+        double[][] input1 = new double[100][2];
         while ((data = in.readLine()) != null) {
-            String sp[] = data.split(" ");
+            String[] sp = data.split(" ");
             input1[counter][0] = Double.parseDouble(sp[0]);
             input1[counter][1] = Double.parseDouble(sp[1]);
             counter++;
         }
-        double input[][] = new double[counter][2];
+        double[][] input = new double[counter][2];
         for (int i = 0; i < counter; i++) {
-            for (int j = 0; j < 2; j++) {
-                input[i][j] = input1[i][j];
-            }
+            System.arraycopy(input1[i], 0, input[i], 0, 2);
         }
         return input;
     }
 
     static double lineScreener(double x1, double x2, double x, double y1, double y2, double y) {
-        double result = y - x * (y2 - y1) / (x2 - x1) + (x1 * y2 - x2 * y1) / (x2 - x1);
-        return result;
+        return y - x * (y2 - y1) / (x2 - x1) + (x1 * y2 - x2 * y1) / (x2 - x1);
     }
 
     static double lineSign(double x1, double x2, double y1, double y2) {
-        double result = (y2 - y1) / (x2 - x1);
-        return result;
+        return (y2 - y1) / (x2 - x1);
     }
 
-    static void attachment(double arr1[][], double arr2[][]) {
-        for (int i = 0; i < arr2.length; i++) {
-            if (arr2[i][0] == arr1[0][0] && arr2[i][1] == arr1[0][1] ||
-                    arr2[i][0] == arr1[1][0] && arr2[i][1] == arr1[1][1] ||
-                    arr2[i][0] == arr1[2][0] && arr2[i][1] == arr1[2][1] ||
-                    arr2[i][0] == arr1[3][0] && arr2[i][1] == arr1[3][1]) {
+    static void calculateAttachment(double[][] rectanglePoints, double[][] points) {
+        for (double[] point : points) {
+            if (point[0] == rectanglePoints[0][0] && point[1] == rectanglePoints[0][1] ||
+                    point[0] == rectanglePoints[1][0] && point[1] == rectanglePoints[1][1] ||
+                    point[0] == rectanglePoints[2][0] && point[1] == rectanglePoints[2][1] ||
+                    point[0] == rectanglePoints[3][0] && point[1] == rectanglePoints[3][1]) {
                 System.out.println("0");
             } else {
-                if (arr1[0][0] - arr1[1][0] == 0) {
-                    if (arr2[i][0] == arr1[0][0]) {
-                        if (arr2[i][1] < arr1[0][1] && arr2[i][1] > arr1[1][1]) {
+                if (rectanglePoints[0][0] - rectanglePoints[1][0] == 0) {
+                    if (point[0] == rectanglePoints[0][0]) {
+                        if (point[1] < rectanglePoints[0][1] && point[1] > rectanglePoints[1][1]) {
                             System.out.println("1");
                         } else {
                             System.out.println("3");
                         }
-                    } else if (arr2[i][0] - arr1[0][0] > 0) {
+                    } else if (point[0] - rectanglePoints[0][0] > 0) {
                         System.out.println("3");
                     } else {
-                        if (arr1[2][1] == arr1[1][1]) {
-                            if (arr2[i][1] == arr1[1][1]) {
-                                if (arr2[i][0] > arr1[2][1] && arr2[i][0] < arr1[1][1]) {
+                        if (rectanglePoints[2][1] == rectanglePoints[1][1]) {
+                            if (point[1] == rectanglePoints[1][1]) {
+                                if (point[0] > rectanglePoints[2][1] && point[0] < rectanglePoints[1][1]) {
                                     System.out.println("1");
                                 } else {
                                     System.out.println("3");
                                 }
-                            } else if (arr2[i][1] - arr1[1][1] < 0) {
+                            } else if (point[1] - rectanglePoints[1][1] < 0) {
                                 System.out.println("3");
                             } else {
-                                if (arr1[3][0] == arr1[2][0]) {
-                                    if (arr2[i][0] == arr2[2][0]) {
-                                        if (arr2[i][1] < arr1[3][1] && arr2[i][1] > arr1[2][1]) {
+                                if (rectanglePoints[3][0] == rectanglePoints[2][0]) {
+                                    if (point[0] == points[2][0]) {
+                                        if (point[1] < rectanglePoints[3][1] && point[1] > rectanglePoints[2][1]) {
                                             System.out.println("1");
                                         } else {
                                             System.out.println("3");
                                         }
-                                    } else if (arr2[i][0] < arr2[2][0]) {
+                                    } else if (point[0] < points[2][0]) {
                                         System.out.println("3");
                                     } else {
-                                        if (arr1[3][1] == arr1[0][1]) {
-                                            if (arr2[i][1] == arr1[3][1]) {
-                                                if (arr2[i][0] > arr1[3][1] && arr2[i][0] < arr1[0][1]) {
+                                        if (rectanglePoints[3][1] == rectanglePoints[0][1]) {
+                                            if (point[1] == rectanglePoints[3][1]) {
+                                                if (point[0] > rectanglePoints[3][1] && point[0] < rectanglePoints[0][1]) {
                                                     System.out.println("1");
                                                 } else {
                                                     System.out.println("3");
                                                 }
-                                            } else if (arr2[i][1] - arr1[3][1] > 0) {
+                                            } else if (point[1] - rectanglePoints[3][1] > 0) {
                                                 System.out.println("3");
                                             } else {
                                                 System.out.println("2");
                                             }
                                         } else {
-                                            if (lineScreener(arr1[3][0], arr1[0][0], arr2[i][0], arr1[3][1], arr1[0][1], arr2[i][1]) < 0) {
+                                            if (lineScreener(rectanglePoints[3][0], rectanglePoints[0][0], point[0], rectanglePoints[3][1], rectanglePoints[0][1], point[1]) < 0) {
                                                 System.out.println("2");
-                                            } else if (lineScreener(arr1[3][0], arr1[0][0], arr2[i][0], arr1[3][1], arr1[0][1], arr2[i][1]) == 0) {
-                                                if (arr2[i][0] < arr1[0][0] && arr2[i][0] > arr1[3][0] || arr2[i][0] > arr1[0][0] && arr2[i][0] < arr1[3][0]) {
+                                            } else if (lineScreener(rectanglePoints[3][0], rectanglePoints[0][0], point[0], rectanglePoints[3][1], rectanglePoints[0][1], point[1]) == 0) {
+                                                if (point[0] < rectanglePoints[0][0] && point[0] > rectanglePoints[3][0] || point[0] > rectanglePoints[0][0] && point[0] < rectanglePoints[3][0]) {
                                                     System.out.println("2");
                                                 }
                                             } else {
@@ -104,32 +99,32 @@ public class task2 {
                                         }
                                     }
                                 } else {
-                                    if (lineScreener(arr1[2][0], arr1[3][0], arr2[i][0], arr1[2][1], arr1[3][1], arr2[i][1]) * lineSign(arr1[2][0], arr1[3][0], arr1[2][1], arr1[3][1]) < 0) {
-                                        if (arr1[3][1] == arr1[0][1]) {
-                                            if (arr2[i][1] == arr1[3][1]) {
-                                                if (arr2[i][0] > arr1[3][1] && arr2[i][0] < arr1[0][1]) {
+                                    if (lineScreener(rectanglePoints[2][0], rectanglePoints[3][0], point[0], rectanglePoints[2][1], rectanglePoints[3][1], point[1]) * lineSign(rectanglePoints[2][0], rectanglePoints[3][0], rectanglePoints[2][1], rectanglePoints[3][1]) < 0) {
+                                        if (rectanglePoints[3][1] == rectanglePoints[0][1]) {
+                                            if (point[1] == rectanglePoints[3][1]) {
+                                                if (point[0] > rectanglePoints[3][1] && point[0] < rectanglePoints[0][1]) {
                                                     System.out.println("1");
                                                 } else {
                                                     System.out.println("3");
                                                 }
-                                            } else if (arr2[i][1] - arr1[3][1] > 0) {
+                                            } else if (point[1] - rectanglePoints[3][1] > 0) {
                                                 System.out.println("3");
                                             } else {
                                                 System.out.println("2");
                                             }
                                         } else {
-                                            if (lineScreener(arr1[3][0], arr1[0][0], arr2[i][0], arr1[3][1], arr1[0][1], arr2[i][1]) < 0) {
+                                            if (lineScreener(rectanglePoints[3][0], rectanglePoints[0][0], point[0], rectanglePoints[3][1], rectanglePoints[0][1], point[1]) < 0) {
                                                 System.out.println("2");
-                                            } else if (lineScreener(arr1[3][0], arr1[0][0], arr2[i][0], arr1[3][1], arr1[0][1], arr2[i][1]) == 0) {
-                                                if (arr2[i][0] < arr1[0][0] && arr2[i][0] > arr1[3][0] || arr2[i][0] > arr1[0][0] && arr2[i][0] < arr1[3][0]) {
+                                            } else if (lineScreener(rectanglePoints[3][0], rectanglePoints[0][0], point[0], rectanglePoints[3][1], rectanglePoints[0][1], point[1]) == 0) {
+                                                if (point[0] < rectanglePoints[0][0] && point[0] > rectanglePoints[3][0] || point[0] > rectanglePoints[0][0] && point[0] < rectanglePoints[3][0]) {
                                                     System.out.println("2");
                                                 }
                                             } else {
                                                 System.out.println("3");
                                             }
                                         }
-                                    } else if (lineScreener(arr1[2][0], arr1[3][0], arr2[i][0], arr1[2][1], arr1[3][1], arr2[i][1]) == 0) {
-                                        if (arr2[i][1] < arr1[2][1] && arr2[i][1] > arr1[3][1] || arr2[i][1] > arr1[2][1] && arr2[i][1] < arr1[3][1]) {
+                                    } else if (lineScreener(rectanglePoints[2][0], rectanglePoints[3][0], point[0], rectanglePoints[2][1], rectanglePoints[3][1], point[1]) == 0) {
+                                        if (point[1] < rectanglePoints[2][1] && point[1] > rectanglePoints[3][1] || point[1] > rectanglePoints[2][1] && point[1] < rectanglePoints[3][1]) {
                                             System.out.println("1");
                                         }
                                     } else {
@@ -138,34 +133,34 @@ public class task2 {
                                 }
                             }
                         } else {
-                            if (lineScreener(arr1[2][0], arr1[1][0], arr2[i][0], arr1[2][1], arr1[1][1], arr2[i][1]) > 0) {
-                                if (arr1[3][0] == arr1[2][0]) {
-                                    if (arr2[i][0] == arr2[2][0]) {
-                                        if (arr2[i][1] < arr1[3][1] && arr2[i][1] > arr1[2][1]) {
+                            if (lineScreener(rectanglePoints[2][0], rectanglePoints[1][0], point[0], rectanglePoints[2][1], rectanglePoints[1][1], point[1]) > 0) {
+                                if (rectanglePoints[3][0] == rectanglePoints[2][0]) {
+                                    if (point[0] == points[2][0]) {
+                                        if (point[1] < rectanglePoints[3][1] && point[1] > rectanglePoints[2][1]) {
                                             System.out.println("1");
                                         } else {
                                             System.out.println("3");
                                         }
-                                    } else if (arr2[i][0] < arr2[2][0]) {
+                                    } else if (point[0] < points[2][0]) {
                                         System.out.println("3");
                                     } else {
-                                        if (arr1[3][1] == arr1[0][1]) {
-                                            if (arr2[i][1] == arr1[3][1]) {
-                                                if (arr2[i][0] > arr1[3][1] && arr2[i][0] < arr1[0][1]) {
+                                        if (rectanglePoints[3][1] == rectanglePoints[0][1]) {
+                                            if (point[1] == rectanglePoints[3][1]) {
+                                                if (point[0] > rectanglePoints[3][1] && point[0] < rectanglePoints[0][1]) {
                                                     System.out.println("1");
                                                 } else {
                                                     System.out.println("3");
                                                 }
-                                            } else if (arr2[i][1] - arr1[3][1] > 0) {
+                                            } else if (point[1] - rectanglePoints[3][1] > 0) {
                                                 System.out.println("3");
                                             } else {
                                                 System.out.println("2");
                                             }
                                         } else {
-                                            if (lineScreener(arr1[3][0], arr1[0][0], arr2[i][0], arr1[3][1], arr1[0][1], arr2[i][1]) < 0) {
+                                            if (lineScreener(rectanglePoints[3][0], rectanglePoints[0][0], point[0], rectanglePoints[3][1], rectanglePoints[0][1], point[1]) < 0) {
                                                 System.out.println("2");
-                                            } else if (lineScreener(arr1[3][0], arr1[0][0], arr2[i][0], arr1[3][1], arr1[0][1], arr2[i][1]) == 0) {
-                                                if (arr2[i][0] < arr1[0][0] && arr2[i][0] > arr1[3][0] || arr2[i][0] > arr1[0][0] && arr2[i][0] < arr1[3][0]) {
+                                            } else if (lineScreener(rectanglePoints[3][0], rectanglePoints[0][0], point[0], rectanglePoints[3][1], rectanglePoints[0][1], point[1]) == 0) {
+                                                if (point[0] < rectanglePoints[0][0] && point[0] > rectanglePoints[3][0] || point[0] > rectanglePoints[0][0] && point[0] < rectanglePoints[3][0]) {
                                                     System.out.println("2");
                                                 }
                                             } else {
@@ -174,40 +169,40 @@ public class task2 {
                                         }
                                     }
                                 } else {
-                                    if (lineScreener(arr1[2][0], arr1[3][0], arr2[i][0], arr1[2][1], arr1[3][1], arr2[i][1]) * lineSign(arr1[2][0], arr1[3][0], arr1[2][1], arr1[3][1]) < 0) {
-                                        if (arr1[3][1] == arr1[0][1]) {
-                                            if (arr2[i][1] == arr1[3][1]) {
-                                                if (arr2[i][0] > arr1[3][1] && arr2[i][0] < arr1[0][1]) {
+                                    if (lineScreener(rectanglePoints[2][0], rectanglePoints[3][0], point[0], rectanglePoints[2][1], rectanglePoints[3][1], point[1]) * lineSign(rectanglePoints[2][0], rectanglePoints[3][0], rectanglePoints[2][1], rectanglePoints[3][1]) < 0) {
+                                        if (rectanglePoints[3][1] == rectanglePoints[0][1]) {
+                                            if (point[1] == rectanglePoints[3][1]) {
+                                                if (point[0] > rectanglePoints[3][1] && point[0] < rectanglePoints[0][1]) {
                                                     System.out.println("1");
                                                 } else {
                                                     System.out.println("3");
                                                 }
-                                            } else if (arr2[i][1] - arr1[3][1] > 0) {
+                                            } else if (point[1] - rectanglePoints[3][1] > 0) {
                                                 System.out.println("3");
                                             } else {
                                                 System.out.println("2");
                                             }
                                         } else {
-                                            if (lineScreener(arr1[3][0], arr1[0][0], arr2[i][0], arr1[3][1], arr1[0][1], arr2[i][1]) < 0) {
+                                            if (lineScreener(rectanglePoints[3][0], rectanglePoints[0][0], point[0], rectanglePoints[3][1], rectanglePoints[0][1], point[1]) < 0) {
                                                 System.out.println("2");
-                                            } else if (lineScreener(arr1[3][0], arr1[0][0], arr2[i][0], arr1[3][1], arr1[0][1], arr2[i][1]) == 0) {
-                                                if (arr2[i][0] < arr1[0][0] && arr2[i][0] > arr1[3][0] || arr2[i][0] > arr1[0][0] && arr2[i][0] < arr1[3][0]) {
+                                            } else if (lineScreener(rectanglePoints[3][0], rectanglePoints[0][0], point[0], rectanglePoints[3][1], rectanglePoints[0][1], point[1]) == 0) {
+                                                if (point[0] < rectanglePoints[0][0] && point[0] > rectanglePoints[3][0] || point[0] > rectanglePoints[0][0] && point[0] < rectanglePoints[3][0]) {
                                                     System.out.println("2");
                                                 }
                                             } else {
                                                 System.out.println("3");
                                             }
                                         }
-                                    } else if (lineScreener(arr1[2][0], arr1[3][0], arr2[i][0], arr1[2][1], arr1[3][1], arr2[i][1]) == 0) {
-                                        if (arr2[i][1] < arr1[2][1] && arr2[i][1] > arr1[3][1] || arr2[i][1] > arr1[2][1] && arr2[i][1] < arr1[3][1]) {
+                                    } else if (lineScreener(rectanglePoints[2][0], rectanglePoints[3][0], point[0], rectanglePoints[2][1], rectanglePoints[3][1], point[1]) == 0) {
+                                        if (point[1] < rectanglePoints[2][1] && point[1] > rectanglePoints[3][1] || point[1] > rectanglePoints[2][1] && point[1] < rectanglePoints[3][1]) {
                                             System.out.println("1");
                                         }
                                     } else {
                                         System.out.println("3");
                                     }
                                 }
-                            } else if (lineScreener(arr1[2][0], arr1[1][0], arr2[i][0], arr1[2][1], arr1[1][1], arr2[i][1]) == 0) {
-                                if (arr2[i][0] < arr1[1][0] && arr2[i][0] > arr1[2][0] && arr2[i][0] > arr1[1][0] && arr2[i][0] < arr1[2][0]) {
+                            } else if (lineScreener(rectanglePoints[2][0], rectanglePoints[1][0], point[0], rectanglePoints[2][1], rectanglePoints[1][1], point[1]) == 0) {
+                                if (point[0] < rectanglePoints[1][0] && point[0] > rectanglePoints[2][0] && point[0] > rectanglePoints[1][0] && point[0] < rectanglePoints[2][0]) {
                                     System.out.println("1");
                                 }
                             } else {
@@ -216,44 +211,44 @@ public class task2 {
                         }
                     }
                 } else {
-                    if (lineScreener(arr1[1][0], arr1[0][0], arr2[i][0], arr1[1][1], arr1[0][1], arr2[i][1]) * lineSign(arr1[1][0], arr1[0][0], arr1[1][1], arr1[0][1]) > 0) {
-                        if (arr1[2][1] == arr1[1][1]) {
-                            if (arr2[i][1] == arr1[1][1]) {
-                                if (arr2[i][0] > arr1[2][1] && arr2[i][0] < arr1[1][1]) {
+                    if (lineScreener(rectanglePoints[1][0], rectanglePoints[0][0], point[0], rectanglePoints[1][1], rectanglePoints[0][1], point[1]) * lineSign(rectanglePoints[1][0], rectanglePoints[0][0], rectanglePoints[1][1], rectanglePoints[0][1]) > 0) {
+                        if (rectanglePoints[2][1] == rectanglePoints[1][1]) {
+                            if (point[1] == rectanglePoints[1][1]) {
+                                if (point[0] > rectanglePoints[2][1] && point[0] < rectanglePoints[1][1]) {
                                     System.out.println("1");
                                 } else {
                                     System.out.println("3");
                                 }
-                            } else if (arr2[i][1] - arr1[1][1] < 0) {
+                            } else if (point[1] - rectanglePoints[1][1] < 0) {
                                 System.out.println("3");
                             } else {
-                                if (arr1[3][0] == arr1[2][0]) {
-                                    if (arr2[i][0] == arr2[2][0]) {
-                                        if (arr2[i][1] < arr1[3][1] && arr2[i][1] > arr1[2][1]) {
+                                if (rectanglePoints[3][0] == rectanglePoints[2][0]) {
+                                    if (point[0] == points[2][0]) {
+                                        if (point[1] < rectanglePoints[3][1] && point[1] > rectanglePoints[2][1]) {
                                             System.out.println("1");
                                         } else {
                                             System.out.println("3");
                                         }
-                                    } else if (arr2[i][0] < arr2[2][0]) {
+                                    } else if (point[0] < points[2][0]) {
                                         System.out.println("3");
                                     } else {
-                                        if (arr1[3][1] == arr1[0][1]) {
-                                            if (arr2[i][1] == arr1[3][1]) {
-                                                if (arr2[i][0] > arr1[3][1] && arr2[i][0] < arr1[0][1]) {
+                                        if (rectanglePoints[3][1] == rectanglePoints[0][1]) {
+                                            if (point[1] == rectanglePoints[3][1]) {
+                                                if (point[0] > rectanglePoints[3][1] && point[0] < rectanglePoints[0][1]) {
                                                     System.out.println("1");
                                                 } else {
                                                     System.out.println("3");
                                                 }
-                                            } else if (arr2[i][1] - arr1[3][1] > 0) {
+                                            } else if (point[1] - rectanglePoints[3][1] > 0) {
                                                 System.out.println("3");
                                             } else {
                                                 System.out.println("2");
                                             }
                                         } else {
-                                            if (lineScreener(arr1[3][0], arr1[0][0], arr2[i][0], arr1[3][1], arr1[0][1], arr2[i][1]) < 0) {
+                                            if (lineScreener(rectanglePoints[3][0], rectanglePoints[0][0], point[0], rectanglePoints[3][1], rectanglePoints[0][1], point[1]) < 0) {
                                                 System.out.println("2");
-                                            } else if (lineScreener(arr1[3][0], arr1[0][0], arr2[i][0], arr1[3][1], arr1[0][1], arr2[i][1]) == 0) {
-                                                if (arr2[i][0] < arr1[0][0] && arr2[i][0] > arr1[3][0] || arr2[i][0] > arr1[0][0] && arr2[i][0] < arr1[3][0]) {
+                                            } else if (lineScreener(rectanglePoints[3][0], rectanglePoints[0][0], point[0], rectanglePoints[3][1], rectanglePoints[0][1], point[1]) == 0) {
+                                                if (point[0] < rectanglePoints[0][0] && point[0] > rectanglePoints[3][0] || point[0] > rectanglePoints[0][0] && point[0] < rectanglePoints[3][0]) {
                                                     System.out.println("2");
                                                 }
                                             } else {
@@ -262,32 +257,32 @@ public class task2 {
                                         }
                                     }
                                 } else {
-                                    if (lineScreener(arr1[2][0], arr1[3][0], arr2[i][0], arr1[2][1], arr1[3][1], arr2[i][1]) * lineSign(arr1[2][0], arr1[3][0], arr1[2][1], arr1[3][1]) < 0) {
-                                        if (arr1[3][1] == arr1[0][1]) {
-                                            if (arr2[i][1] == arr1[3][1]) {
-                                                if (arr2[i][0] > arr1[3][1] && arr2[i][0] < arr1[0][1]) {
+                                    if (lineScreener(rectanglePoints[2][0], rectanglePoints[3][0], point[0], rectanglePoints[2][1], rectanglePoints[3][1], point[1]) * lineSign(rectanglePoints[2][0], rectanglePoints[3][0], rectanglePoints[2][1], rectanglePoints[3][1]) < 0) {
+                                        if (rectanglePoints[3][1] == rectanglePoints[0][1]) {
+                                            if (point[1] == rectanglePoints[3][1]) {
+                                                if (point[0] > rectanglePoints[3][1] && point[0] < rectanglePoints[0][1]) {
                                                     System.out.println("1");
                                                 } else {
                                                     System.out.println("3");
                                                 }
-                                            } else if (arr2[i][1] - arr1[3][1] > 0) {
+                                            } else if (point[1] - rectanglePoints[3][1] > 0) {
                                                 System.out.println("3");
                                             } else {
                                                 System.out.println("2");
                                             }
                                         } else {
-                                            if (lineScreener(arr1[3][0], arr1[0][0], arr2[i][0], arr1[3][1], arr1[0][1], arr2[i][1]) < 0) {
+                                            if (lineScreener(rectanglePoints[3][0], rectanglePoints[0][0], point[0], rectanglePoints[3][1], rectanglePoints[0][1], point[1]) < 0) {
                                                 System.out.println("2");
-                                            } else if (lineScreener(arr1[3][0], arr1[0][0], arr2[i][0], arr1[3][1], arr1[0][1], arr2[i][1]) == 0) {
-                                                if (arr2[i][0] < arr1[0][0] && arr2[i][0] > arr1[3][0] || arr2[i][0] > arr1[0][0] && arr2[i][0] < arr1[3][0]) {
+                                            } else if (lineScreener(rectanglePoints[3][0], rectanglePoints[0][0], point[0], rectanglePoints[3][1], rectanglePoints[0][1], point[1]) == 0) {
+                                                if (point[0] < rectanglePoints[0][0] && point[0] > rectanglePoints[3][0] || point[0] > rectanglePoints[0][0] && point[0] < rectanglePoints[3][0]) {
                                                     System.out.println("2");
                                                 }
                                             } else {
                                                 System.out.println("3");
                                             }
                                         }
-                                    } else if (lineScreener(arr1[2][0], arr1[3][0], arr2[i][0], arr1[2][1], arr1[3][1], arr2[i][1]) == 0) {
-                                        if (arr2[i][1] < arr1[2][1] && arr2[i][1] > arr1[3][1] || arr2[i][1] > arr1[2][1] && arr2[i][1] < arr1[3][1]) {
+                                    } else if (lineScreener(rectanglePoints[2][0], rectanglePoints[3][0], point[0], rectanglePoints[2][1], rectanglePoints[3][1], point[1]) == 0) {
+                                        if (point[1] < rectanglePoints[2][1] && point[1] > rectanglePoints[3][1] || point[1] > rectanglePoints[2][1] && point[1] < rectanglePoints[3][1]) {
                                             System.out.println("1");
                                         }
                                     } else {
@@ -296,34 +291,34 @@ public class task2 {
                                 }
                             }
                         } else {
-                            if (lineScreener(arr1[2][0], arr1[1][0], arr2[i][0], arr1[2][1], arr1[1][1], arr2[i][1]) > 0) {
-                                if (arr1[3][0] == arr1[2][0]) {
-                                    if (arr2[i][0] == arr2[2][0]) {
-                                        if (arr2[i][1] < arr1[3][1] && arr2[i][1] > arr1[2][1]) {
+                            if (lineScreener(rectanglePoints[2][0], rectanglePoints[1][0], point[0], rectanglePoints[2][1], rectanglePoints[1][1], point[1]) > 0) {
+                                if (rectanglePoints[3][0] == rectanglePoints[2][0]) {
+                                    if (point[0] == points[2][0]) {
+                                        if (point[1] < rectanglePoints[3][1] && point[1] > rectanglePoints[2][1]) {
                                             System.out.println("1");
                                         } else {
                                             System.out.println("3");
                                         }
-                                    } else if (arr2[i][0] < arr2[2][0]) {
+                                    } else if (point[0] < points[2][0]) {
                                         System.out.println("3");
                                     } else {
-                                        if (arr1[3][1] == arr1[0][1]) {
-                                            if (arr2[i][1] == arr1[3][1]) {
-                                                if (arr2[i][0] > arr1[3][1] && arr2[i][0] < arr1[0][1]) {
+                                        if (rectanglePoints[3][1] == rectanglePoints[0][1]) {
+                                            if (point[1] == rectanglePoints[3][1]) {
+                                                if (point[0] > rectanglePoints[3][1] && point[0] < rectanglePoints[0][1]) {
                                                     System.out.println("1");
                                                 } else {
                                                     System.out.println("3");
                                                 }
-                                            } else if (arr2[i][1] - arr1[3][1] > 0) {
+                                            } else if (point[1] - rectanglePoints[3][1] > 0) {
                                                 System.out.println("3");
                                             } else {
                                                 System.out.println("2");
                                             }
                                         } else {
-                                            if (lineScreener(arr1[3][0], arr1[0][0], arr2[i][0], arr1[3][1], arr1[0][1], arr2[i][1]) < 0) {
+                                            if (lineScreener(rectanglePoints[3][0], rectanglePoints[0][0], point[0], rectanglePoints[3][1], rectanglePoints[0][1], point[1]) < 0) {
                                                 System.out.println("2");
-                                            } else if (lineScreener(arr1[3][0], arr1[0][0], arr2[i][0], arr1[3][1], arr1[0][1], arr2[i][1]) == 0) {
-                                                if (arr2[i][0] < arr1[0][0] && arr2[i][0] > arr1[3][0] || arr2[i][0] > arr1[0][0] && arr2[i][0] < arr1[3][0]) {
+                                            } else if (lineScreener(rectanglePoints[3][0], rectanglePoints[0][0], point[0], rectanglePoints[3][1], rectanglePoints[0][1], point[1]) == 0) {
+                                                if (point[0] < rectanglePoints[0][0] && point[0] > rectanglePoints[3][0] || point[0] > rectanglePoints[0][0] && point[0] < rectanglePoints[3][0]) {
                                                     System.out.println("2");
                                                 }
                                             } else {
@@ -332,48 +327,48 @@ public class task2 {
                                         }
                                     }
                                 } else {
-                                    if (lineScreener(arr1[2][0], arr1[3][0], arr2[i][0], arr1[2][1], arr1[3][1], arr2[i][1]) * lineSign(arr1[2][0], arr1[3][0], arr1[2][1], arr1[3][1]) < 0) {
-                                        if (arr1[3][1] == arr1[0][1]) {
-                                            if (arr2[i][1] == arr1[3][1]) {
-                                                if (arr2[i][0] > arr1[3][1] && arr2[i][0] < arr1[0][1]) {
+                                    if (lineScreener(rectanglePoints[2][0], rectanglePoints[3][0], point[0], rectanglePoints[2][1], rectanglePoints[3][1], point[1]) * lineSign(rectanglePoints[2][0], rectanglePoints[3][0], rectanglePoints[2][1], rectanglePoints[3][1]) < 0) {
+                                        if (rectanglePoints[3][1] == rectanglePoints[0][1]) {
+                                            if (point[1] == rectanglePoints[3][1]) {
+                                                if (point[0] > rectanglePoints[3][1] && point[0] < rectanglePoints[0][1]) {
                                                     System.out.println("1");
                                                 } else {
                                                     System.out.println("3");
                                                 }
-                                            } else if (arr2[i][1] - arr1[3][1] > 0) {
+                                            } else if (point[1] - rectanglePoints[3][1] > 0) {
                                                 System.out.println("3");
                                             } else {
                                                 System.out.println("2");
                                             }
                                         } else {
-                                            if (lineScreener(arr1[3][0], arr1[0][0], arr2[i][0], arr1[3][1], arr1[0][1], arr2[i][1]) < 0) {
+                                            if (lineScreener(rectanglePoints[3][0], rectanglePoints[0][0], point[0], rectanglePoints[3][1], rectanglePoints[0][1], point[1]) < 0) {
                                                 System.out.println("2");
-                                            } else if (lineScreener(arr1[3][0], arr1[0][0], arr2[i][0], arr1[3][1], arr1[0][1], arr2[i][1]) == 0) {
-                                                if (arr2[i][0] < arr1[0][0] && arr2[i][0] > arr1[3][0] || arr2[i][0] > arr1[0][0] && arr2[i][0] < arr1[3][0]) {
+                                            } else if (lineScreener(rectanglePoints[3][0], rectanglePoints[0][0], point[0], rectanglePoints[3][1], rectanglePoints[0][1], point[1]) == 0) {
+                                                if (point[0] < rectanglePoints[0][0] && point[0] > rectanglePoints[3][0] || point[0] > rectanglePoints[0][0] && point[0] < rectanglePoints[3][0]) {
                                                     System.out.println("2");
                                                 }
                                             } else {
                                                 System.out.println("3");
                                             }
                                         }
-                                    } else if (lineScreener(arr1[2][0], arr1[3][0], arr2[i][0], arr1[2][1], arr1[3][1], arr2[i][1]) == 0) {
-                                        if (arr2[i][1] < arr1[2][1] && arr2[i][1] > arr1[3][1] || arr2[i][1] > arr1[2][1] && arr2[i][1] < arr1[3][1]) {
+                                    } else if (lineScreener(rectanglePoints[2][0], rectanglePoints[3][0], point[0], rectanglePoints[2][1], rectanglePoints[3][1], point[1]) == 0) {
+                                        if (point[1] < rectanglePoints[2][1] && point[1] > rectanglePoints[3][1] || point[1] > rectanglePoints[2][1] && point[1] < rectanglePoints[3][1]) {
                                             System.out.println("1");
                                         }
                                     } else {
                                         System.out.println("3");
                                     }
                                 }
-                            } else if (lineScreener(arr1[2][0], arr1[1][0], arr2[i][0], arr1[2][1], arr1[1][1], arr2[i][1]) == 0) {
-                                if (arr2[i][0] < arr1[1][0] && arr2[i][0] > arr1[2][0] && arr2[i][0] > arr1[1][0] && arr2[i][0] < arr1[2][0]) {
+                            } else if (lineScreener(rectanglePoints[2][0], rectanglePoints[1][0], point[0], rectanglePoints[2][1], rectanglePoints[1][1], point[1]) == 0) {
+                                if (point[0] < rectanglePoints[1][0] && point[0] > rectanglePoints[2][0] && point[0] > rectanglePoints[1][0] && point[0] < rectanglePoints[2][0]) {
                                     System.out.println("1");
                                 }
                             } else {
                                 System.out.println("3");
                             }
                         }
-                    } else if (lineScreener(arr1[1][0], arr1[0][0], arr2[i][0], arr1[1][1], arr1[0][1], arr2[i][1]) == 0) {
-                        if (arr2[i][0] < arr1[1][1] && arr2[i][0] > arr1[0][1] && arr2[i][0] > arr1[1][1] && arr2[i][0] < arr1[0][1]) {
+                    } else if (lineScreener(rectanglePoints[1][0], rectanglePoints[0][0], point[0], rectanglePoints[1][1], rectanglePoints[0][1], point[1]) == 0) {
+                        if (point[0] < rectanglePoints[1][1] && point[0] > rectanglePoints[0][1] && point[0] > rectanglePoints[1][1] && point[0] < rectanglePoints[0][1]) {
                             System.out.println("1");
                         }
                     } else {
@@ -384,7 +379,7 @@ public class task2 {
         }
     }
 
-    static double[][] highRight(double arr[][]) {
+    static double[][] calculateTopRight(double[][] arr) {
         int indexOfHigh = 0;
         for (int i = 0; i < arr.length - 1; i++) {
             if (arr[indexOfHigh][1] < arr[i][1]) {
@@ -396,7 +391,7 @@ public class task2 {
                 indexOfHigh++;
             }
         }
-        double arr1[][] = new double[4][2];
+        double[][] arr1 = new double[4][2];
         for (int i = 0; i < 4; i++) {
             arr1[i][0] = arr[(i + indexOfHigh) % 4][0];
             arr1[i][1] = arr[(i + indexOfHigh) % 4][1];

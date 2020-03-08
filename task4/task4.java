@@ -9,9 +9,9 @@ import java.util.Comparator;
 import java.util.List;
 
 public class task4 {
-    static List<LocalTime> enterTimes = new ArrayList();
-    static List<LocalTime> exitTimes = new ArrayList();
-    static List<Integer> visitorsCountArray = new ArrayList();
+    static List<LocalTime> enterTimes = new ArrayList<>();
+    static List<LocalTime> exitTimes = new ArrayList<>();
+    static List<Integer> visitorsCountArray = new ArrayList<>();
     static int maxVisitorsCounter = 0;
     static int visitors = 0;
 
@@ -54,9 +54,9 @@ public class task4 {
 
     static void readFile(String filename) throws Exception {
         BufferedReader in = new BufferedReader(new FileReader(filename));
-        String data = "";
+        String data;
         while ((data = in.readLine()) != null) {
-            String sp[] = data.split(" ");
+            String[] sp = data.split(" ");
             parseLocalDate(sp[0], enterTimes);
             parseLocalDate(sp[1], exitTimes);
             visitors++;
