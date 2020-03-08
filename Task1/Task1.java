@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-public class Task1 {
+public class task1 {
     public static void main (String[] args) throws Exception {
         String data = "";
         int counter = 0;

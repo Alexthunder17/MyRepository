@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-public class Task3 {
+public class task3 {
     public static void main(String[] args) throws Exception {
         final int Size = 16;
         double arr1[] = new double[Size];

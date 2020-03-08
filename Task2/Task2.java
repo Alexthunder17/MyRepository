@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-public class Task2 {
+public class task2 {
     public static void main(String[] args) throws Exception {
         double arr1[][] = new double[4][2];
         double arr2[][] = new double[100][2];
