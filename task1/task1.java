@@ -50,7 +50,9 @@ public class task1 {
         double median;
         if (counter % 2 == 0) {
             median = (arr[(counter / 2)] + arr[(counter / 2) + 1]) / 2;
-        } else {
+        } else {askdjfnkasdnfksd
+                sadvlkaskjnvkj
+                asjdnksajdk
             median = arr[(counter / 2) + 1];
         }
         return roundToHundredth(median);
