@@ -1,13 +1,16 @@
-import java.io.*;
-import java.util.*;
+package task1;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.util.Arrays;
 
 public class task1 {
-    public static void main (String[] args) throws Exception {
+    public static void main(String[] args) throws Exception {
         String data = "";
         int counter = 0;
         double sum = 0;
         double input[] = new double[1000];
-        for (String s: args) {
+        for (String s : args) {
             BufferedReader in = new BufferedReader(new FileReader(s));
             while ((data = in.readLine()) != null) {
                 input[counter] = Integer.parseInt(data);
@@ -28,21 +31,24 @@ public class task1 {
             System.out.format("%.2f\n", roundToHundredth(sum / counter));
         }
     }
-    static double roundToHundredth (double number) {
+
+    static double roundToHundredth(double number) {
         double rounded = (Math.round(100 * number)) / 100.0;
         return rounded;
     }
-    static double percentileOfArr (double arr[], int counter) {
+
+    static double percentileOfArr(double arr[], int counter) {
         double perL90 = (counter + 1) * 0.9;
         double per90;
         if (perL90 % 1 == 0) {
             per90 = arr[(int) perL90 - 1];
         } else {
-            per90 = arr[(int)perL90 - 1] + 0.9 * (arr[(int)perL90] - arr[(int)perL90 - 1]);
+            per90 = arr[(int) perL90 - 1] + 0.9 * (arr[(int) perL90] - arr[(int) perL90 - 1]);
         }
         return roundToHundredth(per90);
     }
-    static double medianOfArr (double arr[], int counter) {
+
+    static double medianOfArr(double arr[], int counter) {
         double median;
         if (counter % 2 == 0) {
             median = (arr[(counter / 2)] + arr[(counter / 2) + 1]) / 2;
